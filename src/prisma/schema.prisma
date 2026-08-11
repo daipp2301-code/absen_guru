@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id            String     @id @default(uuid())
+  username      String     @unique
+  password_hash String     @default("$2a$10$w8f7Hq.8hC3x.m.m.m.m.eG.G.G.G.G.G.G.G.G.G.G")
+  nama_lengkap  String
+  email         String?
+  nomor_telepon String?
+  alamat        String?
+  foto_profil   String?
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+
+  user_roles    UserRole[]
+  teachers      Teacher[]
+  activity_logs ActivityLog[]
+  sessions      Session[]
+
+  @@map("profiles")
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  user_id    String
+  role       String   // "admin" | "guru"
+  created_at DateTime @default(now())
+
+  profile    Profile  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("user_roles")
+}
+
+model Teacher {
+  id                  String         @id @default(uuid())
+  user_id             String
+  nama_lengkap        String
+  nip                 String?
+  email               String?
+  nomor_telepon       String?
+  alamat              String?
+  foto_profil         String?
+  jabatan             String?
+  mata_pelajaran      String?
+  tempat_lahir        String?
+  tanggal_lahir       String?
+  jenis_kelamin       String?
+  pendidikan_terakhir String?
+  status_kepegawaian  String?
+  tanggal_masuk       String?
+  created_at          DateTime       @default(now())
+  updated_at          DateTime       @updatedAt
+
+  profile             Profile        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  attendance          Attendance[]
+  leave_requests      LeaveRequest[]
+
+  @@map("teachers")
+}
+
+model Attendance {
+  id          String   @id @default(uuid())
+  teacher_id  String
+  tanggal     String
+  jam_masuk   String?
+  jam_keluar  String?
+  status      String   @default("hadir")
+  jarak       Float?
+  latitude    Float?
+  longitude   Float?
+  foto_masuk  String?
+  foto_keluar String?
+  catatan     String?  @db.Text
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  teachers    Teacher  @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+
+  @@map("attendance")
+}
+
+model LeaveRequest {
+  id             String   @id @default(uuid())
+  teacher_id     String
+  kategori       String
+  tanggal_mulai  String
+  tanggal_selesai String
+  alasan         String   @db.Text
+  dokumen        String?
+  status         String   @default("menunggu")
+  catatan_admin  String?  @db.Text
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  teachers       Teacher  @relation(fields: [teacher_id], references: [id], onDelete: Cascade)
+
+  @@map("leave_requests")
+}
+
+model SchoolSettings {
+  id           String   @id @default("default")
+  nama_sekolah String   @default("MTS Math'laul Anwar Napal")
+  alamat       String?  @db.Text
+  jam_masuk    String   @default("07:00")
+  jam_pulang   String   @default("14:00")
+  latitude     Float    @default(-5.3582)
+  longitude    Float    @default(105.1234)
+  radius       Float    @default(100)
+  logo         String?
+  updated_at   DateTime @updatedAt
+
+  @@map("school_settings")
+}
+
+model Announcement {
+  id             String   @id @default(uuid())
+  judul          String
+  isi_pengumuman String   @db.Text
+  tanggal        String
+  created_at     DateTime @default(now())
+
+  @@map("announcements")
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  user_id    String?
+  aksi       String
+  keterangan String?  @db.Text
+  created_at DateTime @default(now())
+
+  profile    Profile? @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@map("activity_logs")
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  user_id    String
+  token      String   @unique
+  expires_at DateTime
+  created_at DateTime @default(now())
+
+  profile    Profile  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}

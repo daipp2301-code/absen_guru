@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" fill="none">
+  <!-- Shield background -->
+  <path d="M100 8 L185 45 L185 120 Q185 175 100 212 Q15 175 15 120 L15 45 Z" fill="url(#shieldGrad)" stroke="url(#goldStroke)" stroke-width="3"/>
+  
+  <!-- Inner shield highlight -->
+  <path d="M100 22 L172 55 L172 120 Q172 166 100 198 Q28 166 28 120 L28 55 Z" fill="url(#shieldInner)" opacity="0.4"/>
+  
+  <!-- Book base -->
+  <rect x="52" y="90" width="96" height="68" rx="6" fill="white" opacity="0.95"/>
+  <rect x="52" y="90" width="96" height="68" rx="6" fill="url(#bookGrad)" opacity="0.15"/>
+  
+  <!-- Book spine -->
+  <rect x="96" y="90" width="8" height="68" fill="url(#goldGrad)" opacity="0.8"/>
+  
+  <!-- Left page lines -->
+  <line x1="62" y1="108" x2="90" y2="108" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="62" y1="118" x2="90" y2="118" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="62" y1="128" x2="90" y2="128" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="62" y1="138" x2="90" y2="138" stroke="#2d7a4f" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  
+  <!-- Right page lines -->
+  <line x1="110" y1="108" x2="138" y2="108" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="110" y1="118" x2="138" y2="118" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="110" y1="128" x2="138" y2="128" stroke="#2d7a4f" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="110" y1="138" x2="138" y2="138" stroke="#2d7a4f" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  
+  <!-- Pen / Quill -->
+  <path d="M125 60 L145 45 L148 52 L128 70 Z" fill="url(#goldGrad)"/>
+  <path d="M128 70 L122 85 L118 75 Z" fill="#f59e0b"/>
+  <path d="M118 75 L122 85 L115 88 Z" fill="#1a1a1a" opacity="0.7"/>
+  <line x1="128" y1="70" x2="118" y2="75" stroke="#d97706" stroke-width="1.5"/>
+  
+  <!-- Stars -->
+  <polygon points="100,28 102.5,35.5 110,35.5 104,40 106.5,47.5 100,43 93.5,47.5 96,40 90,35.5 97.5,35.5" fill="#f59e0b" opacity="0.9"/>
+  <polygon points="65,62 66.5,67 71.5,67 67.5,70 69,75 65,72 61,75 62.5,70 58.5,67 63.5,67" fill="#fbbf24" opacity="0.8"/>
+  <polygon points="135,62 136.5,67 141.5,67 137.5,70 139,75 135,72 131,75 132.5,70 128.5,67 133.5,67" fill="#fbbf24" opacity="0.8"/>
+  
+  <!-- Bottom text background -->
+  <rect x="30" y="170" width="140" height="28" rx="4" fill="url(#goldGrad)" opacity="0.15"/>
+  
+  <!-- Decorative bottom arc -->
+  <path d="M35 195 Q100 210 165 195" stroke="url(#goldGrad)" stroke-width="1.5" fill="none" opacity="0.6"/>
+  
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a6b3c"/>
+      <stop offset="50%" style="stop-color:#2d7a4f"/>
+      <stop offset="100%" style="stop-color:#1a5c35"/>
+    </linearGradient>
+    <linearGradient id="shieldInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fcd34d"/>
+      <stop offset="50%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="bookGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d7a4f"/>
+      <stop offset="100%" style="stop-color:#1a6b3c"/>
+    </linearGradient>
+    <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fcd34d"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+  </defs>
+</svg>

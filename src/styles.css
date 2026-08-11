@@ -1,0 +1,544 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system: Sistem Absensi Guru MTS Math'laul Anwar Napal
+ * Konsep: Modern Minimalis + Material Design + Glassmorphism ringan
+ * Palette: hijau utama, putih, abu-abu netral, biru muda aksen
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+  --radius-3xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Shadow tokens */
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px -4px rgba(0,0,0,0.08);
+  --shadow-card-hover: 0 4px 20px -4px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-float: 0 12px 40px -8px rgba(0,0,0,0.2);
+  --shadow-sidebar: 4px 0 24px rgba(0,0,0,0.06);
+  --shadow-header: 0 1px 0 rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+
+  /* Animations */
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.3s ease both;
+  --animate-slide-in-left: slide-in-left 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-scale-in: scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+}
+
+/* ===================== KEYFRAMES ===================== */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+@keyframes bounce-in {
+  0%   { opacity: 0; transform: scale(0.75); }
+  60%  { transform: scale(1.06); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ===================== LIGHT THEME ===================== */
+:root {
+  --radius: 0.75rem;
+
+  /* Backgrounds */
+  --background: #f5f7f5;
+  --foreground: #1a2e1a;
+
+  /* Card */
+  --card: #ffffff;
+  --card-foreground: #1a2e1a;
+
+  /* Popover */
+  --popover: #ffffff;
+  --popover-foreground: #1a2e1a;
+
+  /* Primary - hijau modern */
+  --primary: #1e8b4f;
+  --primary-foreground: #ffffff;
+  --primary-soft: #e6f4ec;
+
+  /* Secondary */
+  --secondary: #f0f4f0;
+  --secondary-foreground: #2a4a2a;
+
+  /* Muted */
+  --muted: #f0f4f0;
+  --muted-foreground: #6b7b6b;
+
+  /* Accent - biru muda */
+  --accent: #e8f4fd;
+  --accent-foreground: #1565c0;
+
+  /* Semantic */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+
+  /* Border & input */
+  --border: #e2e8e2;
+  --input: #e2e8e2;
+  --ring: #1e8b4f;
+
+  /* Charts */
+  --chart-1: #1e8b4f;
+  --chart-2: #38bdf8;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #ef4444;
+
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #2a3a2a;
+  --sidebar-primary: #1e8b4f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e6f4ec;
+  --sidebar-accent-foreground: #1e6b3c;
+  --sidebar-border: #eaeeea;
+  --sidebar-ring: #1e8b4f;
+}
+
+/* ===================== DARK THEME ===================== */
+.dark {
+  --background: #0f1a12;
+  --foreground: #e8f0e8;
+
+  --card: #1a2a1c;
+  --card-foreground: #e8f0e8;
+
+  --popover: #1a2a1c;
+  --popover-foreground: #e8f0e8;
+
+  --primary: #34c576;
+  --primary-foreground: #0a1a0c;
+  --primary-soft: #1a3520;
+
+  --secondary: #1e2e20;
+  --secondary-foreground: #d0e8d0;
+
+  --muted: #1e2e20;
+  --muted-foreground: #7a9a7a;
+
+  --accent: #1a2a3a;
+  --accent-foreground: #60a5fa;
+
+  --destructive: #f87171;
+  --destructive-foreground: #1a0a0a;
+  --success: #4ade80;
+  --success-foreground: #0a1a0c;
+  --warning: #fbbf24;
+  --warning-foreground: #1a1000;
+  --info: #60a5fa;
+  --info-foreground: #0a1020;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #34c576;
+
+  --chart-1: #34c576;
+  --chart-2: #60a5fa;
+  --chart-3: #fbbf24;
+  --chart-4: #a78bfa;
+  --chart-5: #f87171;
+
+  --sidebar: #141f16;
+  --sidebar-foreground: #d0e8d0;
+  --sidebar-primary: #34c576;
+  --sidebar-primary-foreground: #0a1a0c;
+  --sidebar-accent: #1a3520;
+  --sidebar-accent-foreground: #6edda0;
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --sidebar-ring: #34c576;
+}
+
+/* ===================== BASE ===================== */
+@layer base {
+  * {
+    border-color: var(--color-border);
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: "Inter", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Smooth scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-muted-foreground); }
+
+  /* Focus ring */
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ===================== UTILITIES ===================== */
+
+/* Card surface - glassmorphism ringan */
+@utility card-surface {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+@utility card-surface-hover {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
+}
+
+/* Glass card */
+@utility glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.dark .glass-card {
+  background: rgba(26, 42, 28, 0.75);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Stat card */
+@utility stat-card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  &:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-3px);
+  }
+}
+
+/* Input styled */
+@utility input-modern {
+  background-color: var(--color-secondary);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  &:hover {
+    border-color: var(--color-primary);
+    background-color: var(--color-card);
+  }
+  &:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(30, 139, 79, 0.12);
+    background-color: var(--color-card);
+  }
+}
+
+/* Badge pulse for notifications */
+@utility badge-pulse {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Shimmer loading */
+@utility shimmer-loading {
+  background: linear-gradient(90deg,
+    var(--color-muted) 25%,
+    var(--color-secondary) 50%,
+    var(--color-muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* Gradient text */
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Status indicator */
+@utility status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Mobile bottom nav safe area */
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ===================== LEAFLET ===================== */
+.leaflet-container {
+  border-radius: var(--radius-xl);
+  z-index: 0;
+  font-family: "Inter", sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+/* ===================== PAGE TRANSITIONS ===================== */
+.page-enter {
+  animation: var(--animate-fade-up);
+}
+
+/* ===================== CUSTOM SCROLLABLE ===================== */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* ===================== MOBILE NAV ANIMATION ===================== */
+.mobile-nav-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-item.active {
+  color: var(--color-primary);
+}
+
+.mobile-nav-item.active .nav-icon {
+  animation: bounce-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ===================== SIDEBAR TRANSITION ===================== */
+.sidebar-link {
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--color-primary);
+  border-radius: 0 3px 3px 0;
+  transition: height 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-link.active::before {
+  height: 70%;
+}
+
+/* ===================== FORM ANIMATIONS ===================== */
+.form-group {
+  animation: slide-up-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.form-group:nth-child(1) { animation-delay: 0ms; }
+.form-group:nth-child(2) { animation-delay: 60ms; }
+.form-group:nth-child(3) { animation-delay: 120ms; }
+.form-group:nth-child(4) { animation-delay: 180ms; }
+.form-group:nth-child(5) { animation-delay: 240ms; }
+
+/* ===================== LOGIN PAGE ===================== */
+.login-bg {
+  background: linear-gradient(135deg, #0f4c28 0%, #1e8b4f 40%, #0a7a45 70%, #0d5230 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 40%);
+}
+
+.login-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+}
+
+/* Floating orbs for login */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.orb-1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(56, 189, 248, 0.12);
+  top: -10%;
+  right: -10%;
+  animation: spin-slow 20s linear infinite;
+}
+
+.orb-2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(255,255,255,0.05);
+  bottom: 10%;
+  left: -5%;
+  animation: spin-slow 30s linear infinite reverse;
+}
+
+/* ===================== DASHBOARD HEADER BANNER ===================== */
+.dashboard-banner {
+  background: linear-gradient(135deg, #1e8b4f 0%, #1a7840 40%, #155d32 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 60%);
+}
+
+/* ===================== CAMERA OVERLAY ===================== */
+.camera-overlay {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.camera-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #34c576;
+  border-style: solid;
+}
+
+.camera-corner-tl { top: 8px; left: 8px; border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.camera-corner-tr { top: 8px; right: 8px; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.camera-corner-bl { bottom: 8px; left: 8px; border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.camera-corner-br { bottom: 8px; right: 8px; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+/* ===================== LOCATION INDICATOR ===================== */
+.location-valid { color: #16a34a; }
+.location-invalid { color: #dc2626; }
+
+.location-pulse {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* ===================== TOAST OVERRIDES ===================== */
+[data-sonner-toaster] {
+  font-family: "Inter", sans-serif;
+}
