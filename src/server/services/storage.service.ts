@@ -16,20 +16,17 @@ export const storageService = {
     const parts = fileName.split("/");
     const subfolder = parts.length > 1 ? parts.slice(0, -1).join("/") : "";
     const name = parts[parts.length - 1] ?? fileName;
-
     const targetDir = ensureUploadDir(subfolder);
     const filePath = path.join(targetDir, name);
     const buffer = Buffer.isBuffer(fileBuffer) ? fileBuffer : Buffer.from(fileBuffer);
-
     await fs.promises.writeFile(filePath, buffer);
     return fileName;
   },
-
   getFileUrl(filePath?: string | null): string | null {
     if (!filePath) return null;
     if (filePath.startsWith("http://") || filePath.startsWith("https://") || filePath.startsWith("data:")) {
       return filePath;
     }
-    return `/uploads/${filePath.replace(/^\/+/, "")}`;
+    return `/uploads/${filePath.replace(/^\\+/, "")}`;
   },
 };

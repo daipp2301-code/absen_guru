@@ -26,7 +26,7 @@ import {
   getProfileServerFn,
   updateProfileServerFn,
 } from "@/api/serverFunctions";
-import { storageService } from "@/services/storage.service";
+
 
 type AuthListener = (event: string, session: any) => void;
 const listeners = new Set<AuthListener>();
@@ -36,7 +36,9 @@ export const supabase = {
     async signInWithPassword({ email, password }: { email?: string; password?: string }) {
       try {
         const username = email ? email.split("@")[0] : "";
-        const result = await loginServerFn({ data: { username: username || "", password: password || "" } });
+        console.log(`[AUTH DEBUG] Supabase signInWithPassword called with username: ${username}`);
+      const result = await loginServerFn({ data: { username: username || "", password: password || "" } });
+      console.log(`[AUTH DEBUG] Supabase loginServerFn result received`);
         if (typeof window !== "undefined") {
           localStorage.setItem("session_token", result.session.access_token);
         }
@@ -116,12 +118,12 @@ export const supabase = {
         },
 
         async createSignedUrl(path: string, expiresIn: number) {
-          const url = storageService.getFileUrl(path);
+          const url = path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') ? path : `/uploads/${path.replace(/^\\+/, '')}`;
           return { data: { signedUrl: url }, error: null };
         },
 
         getPublicUrl(path: string) {
-          const url = storageService.getFileUrl(path);
+          const url = path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:') ? path : `/uploads/${path.replace(/^\\+/, '')}`;
           return { data: { publicUrl: url } };
         },
       };

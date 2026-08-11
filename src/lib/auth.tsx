@@ -7,8 +7,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+// Session type removed – using Prisma session
+import type { Session } from "@prisma/client"; // Prisma session type
+import { supabase } from "@/integrations/supabase/client"; // still used for data queries
+import { validateSessionServerFn, loginServerFn, logoutServerFn } from "@/api/serverFunctions";
 import { emailDariUsername } from "./username";
 
 export type Profil = {
@@ -60,53 +62,101 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setGuru((t.data as Guru) ?? null);
   }, []);
 
+  // On mount, load session from cookie/localStorage using our Prisma backend
   useEffect(() => {
-    let aktif = true;
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      if (!aktif) return;
-      setSession(s);
-      if (!s) {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('session_token') : null;
+    if (!token) {
+      setMemuat(false);
+      return;
+    }
+    (async () => {
+      try {
+        const full = await validateSessionServerFn({ data: { token } });
+        setProfil(full.profil ?? null);
+        setPeran(full.peran ?? null);
+        setGuru(full.guru ?? null);
+        console.log('[AUTH] Session restored from cookie');
+      } catch (e) {
+        console.error('[AUTH] Failed to restore session', e);
         setProfil(null);
         setPeran(null);
         setGuru(null);
-      } else {
-        setTimeout(() => void muatData(s.user.id), 0);
+        // clear invalid token
+        localStorage.removeItem('session_token');
+      } finally {
+        setMemuat(false);
       }
-    });
-
-    void (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!aktif) return;
-      setSession(data.session);
-      await muatData(data.session?.user.id);
-      setMemuat(false);
     })();
-
-    return () => {
-      aktif = false;
-      sub.subscription.unsubscribe();
-    };
-  }, [muatData]);
+    // No Supabase auth listener needed
+  }, []);
 
   const masuk = useCallback(async (username: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: emailDariUsername(username),
-      password,
-    });
-    if (error) throw new Error("Username atau password salah");
+    console.log('[AUTH] MySQL login started');
+    try {
+      const result = await loginServerFn({ data: { username, password } });
+      // result contains session, profil, peran, guru
+      const token = result.session.access_token;
+      // store token in http-only cookie is set by server, also keep in localStorage for legacy code
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('session_token', token);
+      }
+      console.log('[AUTH] Session token stored');
+      // update context with returned data
+      setProfil(result.profil ?? null);
+      setPeran(result.peran ?? null);
+      setGuru(result.guru ?? null);
+      // set Prisma session instead of null
+      setSession(result.session);
+      // loading complete after login
+      setMemuat(false);
+      console.log('[AUTH] MySQL login succeeded');
+      console.log('[AUTH] Login successful, user ID:', result.session.userId ?? result.session.id);
+      console.log('[AUTH] Role:', result.peran);
+      console.log('[AUTH] Redirect will be handled by redirect effect');
+      console.log('[AUTH] Redirecting based on role');
+    } catch (e: any) {
+      console.error('[AUTH] MySQL login error:', e);
+      throw new Error(e.message ?? 'Username atau password salah');
+    }
   }, []);
 
   const keluar = useCallback(async () => {
-    await supabase.auth.signOut();
+    console.log('[AUTH] logout started');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('session_token') : null;
+    if (token) {
+      try {
+        await logoutServerFn({ data: { token } });
+      } catch (e) {
+        console.error('[AUTH] logout error', e);
+      }
+    }
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('session_token');
+    }
     setSession(null);
     setProfil(null);
     setPeran(null);
     setGuru(null);
+    console.log('[AUTH] logout completed');
   }, []);
 
   const muatUlang = useCallback(async () => {
-    const { data } = await supabase.auth.getSession();
-    await muatData(data.session?.user.id);
+    // Refresh session by re‑validating the token stored in localStorage (or cookie)
+    const token = typeof window !== "undefined" ? localStorage.getItem("session_token") : null;
+    if (!token) return;
+    try {
+      const full = await validateSessionServerFn({ data: { token } });
+      setProfil(full.profil ?? null);
+      setPeran(full.peran ?? null);
+      setGuru(full.guru ?? null);
+      console.log("[AUTH] Session refreshed from server");
+    } catch (e) {
+      console.error("[AUTH] Session refresh failed", e);
+      localStorage.removeItem("session_token");
+      setProfil(null);
+      setPeran(null);
+      setGuru(null);
+    }
   }, [muatData]);
 
   const value = useMemo(

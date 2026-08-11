@@ -39,9 +39,12 @@ function Login() {
   // Auto-redirect based on role after login
   useEffect(() => {
     if (!memuat && session && peran) {
+      console.log('[AUTH] Redirect effect triggered, peran:', peran);
       if (peran === "admin") {
+        console.log('[AUTH] Navigating to admin dashboard');
         void navigate({ to: "/dashboard", replace: true });
       } else {
+        console.log('[AUTH] Navigating to generic dashboard');
         void navigate({ to: "/dashboard", replace: true });
       }
     }
@@ -49,13 +52,16 @@ function Login() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('[AUTH] Login submitted');
     setProses(true);
     try {
       await masuk(username, password);
-      toast.success("Berhasil masuk! Selamat datang.");
+      console.log('[AUTH] masuk resolved');
+      toast.success('Berhasil masuk! Selamat datang.');
       // Navigation will be handled by the useEffect above after peran loads
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Gagal masuk. Periksa username dan password.");
+      console.error('[AUTH] Login error:', err);
+      toast.error(err instanceof Error ? err.message : 'Gagal masuk. Periksa username dan password.');
     } finally {
       setProses(false);
     }

@@ -2,22 +2,34 @@ import { userRepository } from "@/repositories/user.repository";
 import { teacherRepository } from "@/repositories/teacher.repository";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/database/client";
+import { randomUUID } from "node:crypto";
 
 export const authService = {
   async login(username: string, password: string) {
+    console.log(`[AUTH SERVER] login request received`);
+    console.log(`[AUTH SERVER] identifier: ${username}`);
+    console.log(`[AUTH SERVER] database connection starting`);
     const user = await userRepository.findByUsername(username);
+    console.log(`[AUTH SERVER] user query starting`);
     if (!user) {
+      console.log(`[AUTH SERVER] user found: false`);
       throw new Error("Username atau password salah");
     }
+    console.log(`[AUTH SERVER] user found: true`);
+    console.log(`[AUTH SERVER] password verification starting`);
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
+    console.log(`[AUTH DEBUG] password verification: ${validPassword}`);
     if (!validPassword) {
+      console.log(`[AUTH DEBUG] user found: true`);
       throw new Error("Username atau password salah");
     }
 
-    const token = crypto.randomUUID();
+    console.log(`[AUTH SERVER] token generation`);
+    const token = randomUUID();
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 hari
 
+    console.log(`[AUTH SERVER] creating session in DB`);
     const session = await prisma.session.create({
       data: {
         user_id: user.id,
@@ -25,10 +37,13 @@ export const authService = {
         expires_at: expiresAt,
       },
     });
+    console.log(`[AUTH SERVER] session created, id: ${session.id}`);
 
+    console.log(`[AUTH SERVER] fetching role and teacher info`);
     const role = user.user_roles[0]?.role ?? null;
     const teacher = user.teachers[0] ?? null;
 
+    console.log(`[AUTH SERVER] authentication success`);
     return {
       session: {
         access_token: session.token,

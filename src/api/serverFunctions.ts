@@ -6,7 +6,7 @@ import { leaveService } from "@/services/leave.service";
 import { announcementService } from "@/services/announcement.service";
 import { settingsService } from "@/services/settings.service";
 import { logService } from "@/services/log.service";
-import { storageService } from "@/services/storage.service";
+import { storageService } from "@/server/services/storage.service";
 
 export const loginServerFn = createServerFn({ method: "POST" })
   .validator((data: { username: string; password: string }) => data)
